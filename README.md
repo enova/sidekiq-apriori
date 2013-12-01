@@ -42,8 +42,10 @@ want to disallow unset priorities, leave the nil in.
 sidekiq-apriori is inspired by (a response to?) [sidekiq-priority](https://github.com/socialpandas/sidekiq-priority), in which the
 order of the priorities is important. Contrary to the approach taken by
 sidekiq-priority, sidekiq-apriori uses sidekiq's built in mechanism for
-configuring the order of processing. So, for example, if your sidekiq.yml
-currently looks like this:
+configuring the order of processing. As such, the ordering of priorities is
+accomplished in the sidekiq.yml.
+
+So, for example, if your sidekiq.yml currently looks like this:
 
 ```yaml
 ## sidekiq.yml
@@ -56,7 +58,7 @@ verbose: false
   - background
 ```
 
-you might want to change the 'queues' entry to look more like this:
+You might want to change the 'queues' entry to look more like this:
 
 ```yaml
 :queues:
@@ -68,8 +70,14 @@ you might want to change the 'queues' entry to look more like this:
   - background
 ```
 
-Use
----
+To route an item to a prioritized queue, append an options hash of the form
+```{ :priority => 'wut' }``` to the end of the arguments. If you're using ruby 2
+& have included ```Sidekiq::Apriori::Worker``` in your worker class then this
+should be enough. Otherwise, you'll need to update that method to optionally
+take an additional argument
+
+Additional Utility
+------------------
 
 In addition to the use described in the PRIORITIES section, some tooling is
 provided for active record classes with priority as an attribute:
@@ -107,10 +115,13 @@ end
 
 If you're lucky enough to be using ruby 2, you can save yourself some work by
 including ```Sidekiq::Apriori::Worker``` instead of ```Sidekiq::Worker``` in your
-worker classes. This will have the nifty side effect of saving you the effort of
-changing the definition of the classes' perform method & its invocation.
-```Sidekiq::Apriori::Worker``` uses ```prepend``` to define a perform which will
-take an optional hash containing a priority designation.
+worker classes. This will save you the effort of changing the definition of the
+classes' perform method & all of its invocations. ```Sidekiq::Apriori::Worker```
+uses ```prepend``` to define a perform which will take an optional hash containing
+a priority designation.
+
+If you're not using ruby 2, you'll need to redefine your perform method to take an
+additional, optional argument
 
 License
 -------
