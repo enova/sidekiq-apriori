@@ -1,12 +1,4 @@
 require 'sidekiq-apriori/version'
-require 'sidekiq-apriori/middleware'
-require 'sidekiq-apriori/arb.rb'
-
-module Sidekiq::Apriori
-  PRIORITIES = [
-    'immediate',
-    'high',
-    nil,
-    'low'
-  ].freeze unless defined?(PRIORITIES)
-end
+require 'sidekiq-apriori/priorities'
+require 'sidekiq-apriori/middleware/prioritizer'
+require 'sidekiq-apriori/arb'

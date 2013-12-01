@@ -20,10 +20,14 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  s.add_development_dependency "activerecord"
+  s.add_development_dependency "fakeredis"
   s.add_development_dependency "pry"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
   s.add_development_dependency "simplecov"
+  s.add_development_dependency "simplecov-rcov"
+  s.add_development_dependency "sqlite3"
 
   s.add_dependency "sidekiq"
 end
