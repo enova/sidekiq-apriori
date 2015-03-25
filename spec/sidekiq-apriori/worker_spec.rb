@@ -15,7 +15,7 @@ describe Sidekiq::Apriori::Worker do
   #
   if ( RUBY_VERSION.split(/\./).map(&:to_i) rescue [] ).first > 1
     it "redefines 'perform' to handle an extra argument when that argument has priority information" do
-      job.should be_an_instance_of(Job)
+      expect(job).to be_an_instance_of(Job)
       expect { job.perform(priority: "high") }.not_to raise_error
     end
 

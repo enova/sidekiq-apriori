@@ -23,7 +23,7 @@ Sidekiq.configure_server do |config|
 end
 
 RSpec.configure do |config|
-  config.before(:each) do
+  config.before(:each) do |example|
     ## Use metadata to determine testing behavior
     ## for queuing.
     Sidekiq::Worker.clear_all
