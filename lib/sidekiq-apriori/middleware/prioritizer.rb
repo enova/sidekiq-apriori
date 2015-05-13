@@ -2,7 +2,7 @@ require 'sidekiq-apriori/priorities'
 
 module Sidekiq::Apriori
   class Prioritizer
-    def call(worker, msg, queue)
+    def call(worker, msg, queue, redis_pool = nil)
       options   = msg["args"].last if msg["args"].respond_to?(:last)
       priority  = options[:priority] if options.is_a?(Hash) && options.has_key?(:priority)
 

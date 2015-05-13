@@ -9,26 +9,36 @@ describe Sidekiq::Apriori::Prioritizer do
 
   describe '#call' do
     it 'should respond' do
-      middleware.respond_to?(:call).should be_true
+      expect(middleware).to respond_to(:call)
     end
 
-    it 'should require three arguments' do
+    it 'rejects less than three arguments' do
       expect { middleware.call }.
-        to raise_error( ArgumentError,'wrong number of arguments (0 for 3)')
+        to raise_error( ArgumentError, /wrong number of arguments/ )
+    end
+
+    it 'allows 3 arguments' do
+      expect { middleware.call(nil, message, queue) {} }.
+        not_to raise_error
+    end
+
+    it 'allows for 4 arguments' do
+      expect { middleware.call(nil, message, queue, nil) {} }.
+        not_to raise_error
     end
 
     it 'should set priority queue' do
       middleware.call(nil, message, queue) {}
-      message['queue'].should eql('foo_high')
+      expect(message['queue']).to eq('foo_high')
     end
 
     it 'should allow only one priority suffix' do
       message['queue'] = 'foo_low_high_immediate'
       middleware.call(nil, message, queue) {}
-      message['queue'].should eql('foo_high')
+      expect(message['queue']).to eq('foo_high')
 
       middleware.call(nil, message, queue) {}
-      message['queue'].should eql('foo_high')
+      expect(message['queue']).to eq('foo_high')
     end
   end
 end

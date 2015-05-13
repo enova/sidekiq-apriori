@@ -12,21 +12,21 @@ describe Sidekiq::Apriori::Arb do
 
   it "should validate priorities" do
     arb.priority = "none"
-    arb.should be_invalid
+    expect(arb).to be_invalid
 
     Sidekiq::Apriori::PRIORITIES.each do |priority|
       arb.priority = priority
-      arb.should be_valid
+      expect(arb).to be_valid
     end
   end
 
   it "should attempt prioritization on creation with named prioritizer" do
-    using_method.should_receive(:some_method)
+    expect(using_method).to receive(:some_method)
     using_method.save
   end
 
   it "should attempt prioritization on creation with using a block" do
-    using_callable.should_receive(:some_other_method)
+    expect(using_callable).to receive(:some_other_method)
     using_callable.save
   end
 end

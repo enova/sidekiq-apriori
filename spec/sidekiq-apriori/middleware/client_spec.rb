@@ -3,7 +3,7 @@ require 'sidekiq-apriori/middleware/prioritizer'
 
 describe Sidekiq::Apriori, 'client middleware' do
   before do
-    Sidekiq.stub(:server? => false)
+    allow(Sidekiq).to receive(:server?).and_return(false)
 
     Sidekiq.configure_client do |config|
       config.client_middleware do |chain|
@@ -14,12 +14,13 @@ describe Sidekiq::Apriori, 'client middleware' do
   end
 
   it "should include Sidekiq::Apriori::Prioritizer in client middleware" do
-    Sidekiq.client_middleware.entries.should be_empty
+    expect(Sidekiq.client_middleware.entries).to be_empty
 
-    (require 'sidekiq-apriori/middleware/client').should be_true
+    expect(require 'sidekiq-apriori/middleware/client').to eq(true)
 
-    Sidekiq.client_middleware.entries.should_not be_empty
-    Sidekiq.client_middleware.entries.map(&:klass).
-      should be_include(Sidekiq::Apriori::Prioritizer)
+    expect(Sidekiq.client_middleware.entries).not_to be_empty
+    expect(Sidekiq.client_middleware.entries.map(&:klass)).to(
+      include(Sidekiq::Apriori::Prioritizer)
+    )
   end
 end
