@@ -4,7 +4,14 @@ require 'sidekiq-apriori/worker'
 describe Sidekiq::Apriori::Worker do
   before(:all) do
     class Job
-      def perform; end
+      attr_accessor :captured_priority
+
+      def perform
+        with_priority do |priority|
+          self.captured_priority = priority
+        end
+      end
+
       include Sidekiq::Apriori::Worker
     end
   end
@@ -24,4 +31,12 @@ describe Sidekiq::Apriori::Worker do
       expect { job.perform({}) }.to raise_error(ArgumentError)
     end
   end
+
+  ## Make priority available
+  #
+  it "makes priority available" do
+    job.perform(priority: "critical")
+    expect(job.captured_priority).to eq("critical")
+  end
+
 end
