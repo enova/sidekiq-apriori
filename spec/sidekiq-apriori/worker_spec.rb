@@ -30,13 +30,11 @@ describe Sidekiq::Apriori::Worker do
       expect { job.perform("high") }.to raise_error(ArgumentError)
       expect { job.perform({}) }.to raise_error(ArgumentError)
     end
-  end
 
-  ## Make priority available
-  #
-  it "makes priority available" do
-    job.perform(priority: "critical")
-    expect(job.captured_priority).to eq("critical")
+    it "makes priority available" do
+      job.perform(priority: "critical")
+      expect(job.captured_priority).to eq("critical")
+    end
   end
 
 end
