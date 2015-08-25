@@ -131,7 +131,7 @@ class SomeWorker
   include Sidekiq::Apriori::Worker
 
   def perform
-    with_priority do |priority|
+    with_priority do |priority = nil|
       OtherWorker.perform_async(priority: priority)
     end
   end
