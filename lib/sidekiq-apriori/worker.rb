@@ -23,7 +23,11 @@ module Sidekiq::Apriori
     end
 
     def with_priority
-      yield(@apriori_priority_args.last)
+      if has_declared_priority?
+        yield(@apriori_priority_args.last)
+      else
+        yield
+      end
     end
 
     def has_declared_priority?
