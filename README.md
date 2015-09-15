@@ -16,11 +16,11 @@ Installation
 
 Manual installation is always an option. From the command line:
 
-    $ gem install sidekiq-priority
+    $ gem install sidekiq-apriori
 
 Or, if you're using bundler, simply include it in your Gemfile:
 
-    gem 'sidekiq-priority'
+    gem 'sidekiq-apriori'
 
 Priorities
 ----------
