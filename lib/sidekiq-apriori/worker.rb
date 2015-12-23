@@ -31,7 +31,7 @@ module Sidekiq::Apriori
     end
 
     def has_declared_priority?
-      @apriori_priority_args.first
+      (@apriori_priority_args || []).first
     end
     private :has_declared_priority?
 
