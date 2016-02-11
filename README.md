@@ -2,7 +2,9 @@ sidekiq-apriori
 ===============
 Prioritization Middleware for Sidekiq
 
-[![Build Status](https://travis-ci.org/enova/sidekiq-apriori.png)](https://travis-ci.org/enova/sidekiq-apriori)
+[![Gem Version](https://badge.fury.io/rb/sidekiq-apriori.svg)](https://rubygems.org/gems/sidekiq-apriori)
+[![Build Status](https://travis-ci.org/enova/sidekiq-apriori.svg)](https://travis-ci.org/enova/sidekiq-apriori)
+[![Dependency Status](https://gemnasium.com/enova/sidekiq-apriori.svg)](https://gemnasium.com/enova/sidekiq-apriori)
 
 Overview
 --------
