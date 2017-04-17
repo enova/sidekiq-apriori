@@ -13,18 +13,40 @@ module Sidekiq::Apriori
   end
 
   module ClassMethods
+
     def perform(*args)
+      extract_priority!(args.last)
       super(*args)
     rescue ArgumentError => err
-      raise err unless has_priority?(args.last)
+      raise err unless has_declared_priority?
       super(*args[0..-2])
     end
 
-    def has_priority?(options)
-      return false unless hashlike?(options)
-      stringify_keys(options).has_key?('priority')
+    def with_priority
+      if has_declared_priority?
+        yield(@apriori_priority_args.last)
+      else
+        yield
+      end
     end
-    private :has_priority?
+
+    def has_declared_priority?
+      (@apriori_priority_args || []).first
+    end
+    private :has_declared_priority?
+
+    def extract_priority!(options)
+      @apriori_priority_args = []
+
+      return unless hashlike?(options)
+      s_opts = stringify_keys(options)
+
+      @apriori_priority_args = [
+        s_opts.has_key?('priority'),
+        s_opts['priority']
+      ]
+    end
+    private :extract_priority!
 
     def stringify_keys(hashish)
       duplicate = hashish.dup

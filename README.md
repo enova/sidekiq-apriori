@@ -125,6 +125,21 @@ a priority designation.
 If you're not using ruby 2, you'll need to redefine your perform method to take an
 additional, optional argument
 
+Since ruby 2 may possibly strip away the `{priority: ...}` option passed to the
+```perform``` method, it provides ```with_priortity``` to compensate for it:
+
+```ruby
+class SomeWorker
+  include Sidekiq::Apriori::Worker
+
+  def perform
+    with_priority do |priority = nil|
+      OtherWorker.perform_async(priority: priority)
+    end
+  end
+end
+```
+
 License
 -------
 
